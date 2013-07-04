@@ -1,4 +1,7 @@
+development.*
+requirements.txt
 *.py[cod]
+env/*
 
 # C extensions
 *.so
