@@ -5,6 +5,7 @@ env/*
 appweb/blueprints
 appweb/static
 appweb/templates
+common/common.scss
 
 # C extensions
 *.so
