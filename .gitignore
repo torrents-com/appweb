@@ -6,6 +6,7 @@ appweb/blueprints
 appweb/static
 appweb/templates
 common/common.scss
+appweb/static/torrents/gen
 
 # C extensions
 *.so
