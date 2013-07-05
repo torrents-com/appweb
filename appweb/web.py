@@ -99,8 +99,8 @@ def create_app(config=None, debug=False):
     scss.config.LOAD_PATHS = [os.path.dirname(os.path.dirname(app.static_folder))]
 
     if not os.path.isdir(app.static_folder+"/gen"): os.mkdir(app.static_folder+"/gen")
-    if not os.path.isdir(app.static_folder+"/blubster/gen"): os.mkdir(app.static_folder+"/blubster/gen")
-    if not os.path.isdir(app.static_folder+"/foofind/gen"): os.mkdir(app.static_folder+"/foofind/gen")
+    #if not os.path.isdir(app.static_folder+"/blubster/gen"): os.mkdir(app.static_folder+"/blubster/gen")
+    #if not os.path.isdir(app.static_folder+"/foofind/gen"): os.mkdir(app.static_folder+"/foofind/gen")
     if not os.path.isdir(app.static_folder+"/torrents/gen"): os.mkdir(app.static_folder+"/torrents/gen")
     app.assets = assets = Environment(app)
     assets.debug = app.debug
