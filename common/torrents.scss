@@ -15,3 +15,37 @@ $generalbackgroundcolor: #eaeaea;
 $generaltextcolor: #333;
 $generalfontfamily: 'Open Sans','helvetica neue',helvetica,arial,sans-serif;
 
+div.result-love{display:none;}
+div.result-rating-love{width:10em !important;}
+
+.result-movies{
+  background-image:url(../imgs/ico.filetype-24-movie-off.png);
+}
+.result-games{
+  background-image:url(../imgs/ico.filetype-24-game-off.png);
+}
+.result-tv{
+  background-image:url(../imgs/ico.filetype-24-series-off.png);
+}
+.result-audio{
+  background-image:url(../imgs/ico.filetype-24-music-off.png) !important;
+}
+.result-anime{
+  background-image:url(../imgs/ico.filetype-24-anime-off.png);
+}
+.result-books{
+  background-image:url(../imgs/ico.filetype-24-ebook-off.png);
+}
+.result-porn{
+  background-image:url(../imgs/ico.filetype-24-porn-off.png);
+}
+.result-software{
+  background-image:url(../imgs/ico.filetype-24-software-off.png) !important;
+}
+.result-mobile{
+  background-image:url(../imgs/ico.filetype-24-mobile-off.png);
+}
+.result-image{
+  background-image:url(../imgs/ico.filetype-24-image-off.png) !important;
+}
+

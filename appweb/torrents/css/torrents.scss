@@ -1,3 +1,68 @@
 @import "common/torrents";
 @import "common/common";
 @import "appweb/static/appweb";
+
+
+.chzn-container-single .chzn-single span.movies,
+.chzn-container .chzn-results li.movies{
+    background-image:url(../imgs/ico.filetype-18-movie-off.png);
+    background-position: 0.55em 0.6em;
+}
+.chzn-container-single .chzn-single span.games,
+.chzn-container .chzn-results li.games{
+    background-image:url(../imgs/ico.filetype-18-game-off.png);
+    background-position: 0.55em 0.6em;
+}
+.chzn-container-single .chzn-single span.tv,
+.chzn-container .chzn-results li.tv{
+    background-image:url(../imgs/ico.filetype-18-series-off.png);
+    background-position: 0.55em 0.6em;
+}
+.chzn-container-single .chzn-single span.music,
+.chzn-container .chzn-results li.music{
+    background-image:url(../imgs/ico.filetype-18-music-off.png) !important;
+    background-position: 0.55em 0.6em;
+}
+.chzn-container-single .chzn-single span.anime,
+.chzn-container .chzn-results li.anime{
+    background-image:url(../imgs/ico.filetype-18-anime-off.png);
+    background-position: 0.55em 0.6em;
+}
+.chzn-container-single .chzn-single span.books,
+.chzn-container .chzn-results li.books{
+    background-image:url(../imgs/ico.filetype-18-ebook-off.png);
+    background-position: 0.55em 0.6em;
+}
+.chzn-container-single .chzn-single span.porn,
+.chzn-container .chzn-results li.porn{
+    background-image:url(../imgs/ico.filetype-18-porn-off.png);
+    background-position: 0.55em 0.6em;
+}
+.chzn-container-single .chzn-single span.software,
+.chzn-container .chzn-results li.software{
+    background-image:url(../imgs/ico.filetype-18-software-off.png) !important;
+    background-position: 0.55em 0.6em;
+}
+.chzn-container-single .chzn-single span.mobile,
+.chzn-container .chzn-results li.mobile{
+    background-image:url(../imgs/ico.filetype-18-mobile-off.png);
+    background-position: 0.55em 0.6em;
+}
+.chzn-container-single .chzn-single span.pictures,
+.chzn-container .chzn-results li.pictures{
+    background-image:url(../imgs/ico.filetype-18-image-off.png);
+    background-position: 0.55em 0.6em;
+}
+
+.chzn-container-single .chzn-single span.movies,
+.chzn-container-single .chzn-single span.games,
+.chzn-container-single .chzn-single span.tv,
+.chzn-container-single .chzn-single span.music,
+.chzn-container-single .chzn-single span.anime,
+.chzn-container-single .chzn-single span.books,
+.chzn-container-single .chzn-single span.porn,
+.chzn-container-single .chzn-single span.software,
+.chzn-container-single .chzn-single span.mobile,
+.chzn-container-single .chzn-single span.pictures{
+    background-position: 0;
+}

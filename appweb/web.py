@@ -25,6 +25,7 @@ from foofind.utils import u, logging
 from foofind.utils.bots import is_search_bot, is_full_browser, check_rate_limit
 
 from appweb.blueprints.files import files
+from appweb.blueprints.appweb_torrents import appweb_torrents
 from appweb.templates import register_filters
 
 import scss
@@ -94,6 +95,7 @@ def create_app(config=None, debug=False):
 
     # Blueprints
     app.register_blueprint(files)
+    app.register_blueprint(appweb_torrents)
 
     # Web Assets
     scss.config.LOAD_PATHS = [os.path.dirname(os.path.dirname(app.static_folder))]
@@ -109,8 +111,8 @@ def create_app(config=None, debug=False):
     register_filter(JsSlimmer)
     register_filter(CssSlimmer)
 
-    assets.register('css_blubster', Bundle('blubster/css/blubster.scss', filters='pyscss', output='blubster/gen/blubster.css', debug=False, depends='appweb.scss'), filters='css_slimmer', output='blubster/gen/blubster.css')
-    assets.register('css_foofind', Bundle('foofind/css/foofind.scss', filters='pyscss', output='foofind/gen/foofind.css', debug=False), filters='css_slimmer', output='foofind/gen/foofind.css')
+    #~ assets.register('css_blubster', Bundle('blubster/css/blubster.scss', filters='pyscss', output='blubster/gen/blubster.css', debug=False, depends='appweb.scss'), filters='css_slimmer', output='blubster/gen/blubster.css')
+    #~ assets.register('css_foofind', Bundle('foofind/css/foofind.scss', filters='pyscss', output='foofind/gen/foofind.css', debug=False), filters='css_slimmer', output='foofind/gen/foofind.css')
     assets.register('css_torrents', Bundle('torrents/css/torrents.scss', filters='pyscss', output='torrents/gen/torrents.css', debug=False), filters='css_slimmer', output='torrents/gen/torrents.css')
     assets.register('js_appweb', Bundle('prototype.js', 'event.simulate.js', 'chosen.proto.min.js','appweb.js', filters='rjsmin', output='gen/appweb.js'), )
 
@@ -228,4 +230,28 @@ def init_g(app):
     g.args = {}
 
     g.page_description=g.title=""
+    
+    g.categories = (('movies',{"q":"movie"}),
+                     ('games',{"q":"game"}),
+                     ('tv',{"q":"series"}),
+                     ('music',{"q":"audio"}),
+                     ('anime',{"q":"anime"}),
+                     ('books',{"q":"ebook"}),
+                     ('porn',{"q":"porn"}),
+                     ('software',{"q":"software"}),
+                     ('mobile',{"q":"mobile"}),
+                     ('pictures',{"q":"image"})
+                     )
 
+import appweb.blueprints.files
+old_torrents_data = appweb.blueprints.files.torrents_data
+def torrents_data2(data):
+    new_data = old_torrents_data(data)
+        # tags del fichero
+    file_tags = new_data["view"]["tags"] if "tags" in data["view"] else []
+    for category in g.categories:
+        if category[1]["q"] in file_tags:
+            data["view"]["file_type"] = category[0]
+    return new_data
+    
+appweb.blueprints.files.torrents_data = torrents_data2
