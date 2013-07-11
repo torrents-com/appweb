@@ -25,7 +25,6 @@ from foofind.utils import u, logging
 from foofind.utils.bots import is_search_bot, is_full_browser, check_rate_limit
 
 from appweb.blueprints.files import files
-from appweb.blueprints.appweb_torrents import appweb_torrents
 from appweb.templates import register_filters
 
 import scss
@@ -95,7 +94,7 @@ def create_app(config=None, debug=False):
 
     # Blueprints
     app.register_blueprint(files)
-    app.register_blueprint(appweb_torrents)
+
 
     # Web Assets
     scss.config.LOAD_PATHS = [os.path.dirname(os.path.dirname(app.static_folder))]
