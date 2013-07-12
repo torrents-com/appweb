@@ -236,7 +236,7 @@ def init_g(app):
                      ('music',{"q":"audio"}),
                      ('anime',{"q":"anime"}),
                      ('books',{"q":"ebook"}),
-                     ('porn',{"q":"porn"}),
+                     ('adult',{"q":"porn"}),
                      ('software',{"q":"software"}),
                      ('mobile',{"q":"mobile"}),
                      ('pictures',{"q":"image"})
