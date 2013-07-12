@@ -7,6 +7,8 @@ appweb/static
 appweb/templates
 common/common.scss
 appweb/static/torrents/gen
+appweb/torrents/gen
+private.*
 
 # C extensions
 *.so

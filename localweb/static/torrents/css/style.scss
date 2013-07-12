@@ -1,0 +1,68 @@
+@import "common/torrents";
+@import "common/common";
+@import "localweb/static/localweb";
+
+
+.play-category li.play-category-movie a{
+  background:url(../imgs/ico.filetype-16-movie-on.png) 0 50% no-repeat;
+}
+.play-category li.play-category-game a{
+  background:url(../imgs/ico.filetype-16-game-on.png) 0 50% no-repeat;
+}
+.play-category li.play-category-series a{
+  background:url(../imgs/ico.filetype-16-series-on.png) 0 50% no-repeat;
+}
+.play-category li.play-category-music a{
+  background:url(../imgs/ico.filetype-16-music-on.png) 0 50% no-repeat;
+}
+.play-category li.play-category-anime a{
+  background:url(../imgs/ico.filetype-16-anime-on.png) 0 50% no-repeat;
+}
+.play-category li.play-category-ebook a{
+  background:url(../imgs/ico.filetype-16-ebook-on.png) 0 50% no-repeat;
+}
+.play-category li.play-category-software a{
+  background:url(../imgs/ico.filetype-16-software-on.png) 0 50% no-repeat;
+}
+.play-category li.play-category-porn a{
+  background:url(../imgs/ico.filetype-16-porn-on.png) 0 50% no-repeat;
+}
+.play-category li.play-category-mobile a{
+  background:url(../imgs/ico.filetype-16-mobile-on.png) 0 50% no-repeat;
+}
+.play-category li.play-category-image a{
+  background:url(../imgs/ico.filetype-16-image-on.png) 0 50% no-repeat;
+}
+
+
+
+.filetype-movie{
+  background:url(../imgs/ico.filetype-36-movie-cut.png) 0 0 no-repeat;
+}
+.filetype-game{
+  background:url(../imgs/ico.filetype-36-game-cut.png) 0 0 no-repeat;
+}
+.filetype-series{
+  background:url(../imgs/ico.filetype-36-series-cut.png) 0 0 no-repeat;
+}
+.filetype-music{
+  background:url(../imgs/ico.filetype-36-music-cut.png) 0 0 no-repeat;
+}
+.filetype-anime{
+  background:url(../imgs/ico.filetype-36-anime-cut.png) 0 0 no-repeat;
+}
+.filetype-ebook{
+  background:url(../imgs/ico.filetype-36-ebook-cut.png) 0 0 no-repeat;
+}
+.filetype-porn{
+  background:url(../imgs/ico.filetype-36-porn-cut.png) 0 0 no-repeat;
+}
+.filetype-software{
+  background:url(../imgs/ico.filetype-36-software-cut.png) 0 0 no-repeat;
+}
+.filetype-mobile{
+  background:url(../imgs/ico.filetype-36-mobile-cut.png) 0 0 no-repeat;
+}
+.filetype-image{
+  background:url(../imgs/ico.filetype-36-image-cut.png) 0 0 no-repeat;
+}
