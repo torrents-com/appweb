@@ -245,12 +245,20 @@ def init_g(app):
 import appweb.blueprints.files
 old_torrents_data = appweb.blueprints.files.torrents_data
 def torrents_data2(data):
+    
+    defaults = {"video":"movies","image":"pictures","document":"books"}
+    
     new_data = old_torrents_data(data)
+    file_type = data["view"]["file_type"]
         # tags del fichero
     file_tags = new_data["view"]["tags"] if "tags" in data["view"] else []
     for category in g.categories:
         if category[1]["q"] in file_tags:
             data["view"]["file_type"] = category[0]
+    if file_type == data["view"]["file_type"]:
+        if data["view"]["file_type"] in defaults:
+            data["view"]["file_type"] = defaults[data["view"]["file_type"]]
+            
     return new_data
     
 appweb.blueprints.files.torrents_data = torrents_data2
