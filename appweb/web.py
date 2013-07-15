@@ -259,6 +259,8 @@ def torrents_data2(data):
         if data["view"]["file_type"] in defaults:
             data["view"]["file_type"] = defaults[data["view"]["file_type"]]
             
+    data['view']['first_image_server'] = "images.torrents.com"
+            
     return new_data
     
 appweb.blueprints.files.torrents_data = torrents_data2
