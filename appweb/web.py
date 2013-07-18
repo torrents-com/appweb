@@ -246,7 +246,8 @@ import appweb.blueprints.files
 old_torrents_data = appweb.blueprints.files.torrents_data
 def torrents_data2(data):
     
-    defaults = {"video":"movies","document":"books", "audio":"music", "image":"picture" }
+    #picture está al revés por necesidades de la aplicación
+    defaults = {"video":"movies","document":"books", "audio":"music", "picture":"image" }
     
     new_data = old_torrents_data(data)
     file_type = data["view"]["file_type"]
