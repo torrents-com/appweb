@@ -211,6 +211,9 @@ def create_app(config=None, debug=False):
 def init_g(app):
 
     g.license_name = "torrents"
+    
+    g.tos_link = "http://torrents.com/legal#tos"
+    g.privacy_link = "http://torrents.com/legal#privacy"
 
     # caracteristicas del cliente
     g.search_bot=is_search_bot()
