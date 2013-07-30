@@ -214,6 +214,8 @@ def init_g(app):
     
     g.tos_link = "http://torrents.com/legal#tos"
     g.privacy_link = "http://torrents.com/legal#privacy"
+    
+    g.analytics_code = '<script type="text/javascript"> \n  var _gaq = _gaq || [];\n  _gaq.push([\'_setAccount\', \'UA-38333996-2\']);  _gaq.push([\'_trackPageview\']); \n  (function() {\n    var ga = document.createElement(\'script\'); ga.type = \'text/javascript\'; ga.async = true;    ga.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.google-analytics.com/ga.js\'; \n    var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(ga, s); \n  })(); \n</script>'
 
     # caracteristicas del cliente
     g.search_bot=is_search_bot()
