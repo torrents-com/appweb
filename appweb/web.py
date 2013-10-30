@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 """
 Módulo principal de la aplicación Web
 """
@@ -105,7 +104,7 @@ def create_app(config=None, debug=False):
 
     for subdir in ['%s/%s' % (dir_static, x) for x in ['gen', 'torrents/gen']]:
         if not os.path.isdir(subdir):
-            os.mkdir(subdir)
+            os.makedirs(subdir)
 
     app.assets = Environment(app)
     app.assets.debug = app.debug
@@ -257,7 +256,6 @@ def init_g(app):
                      ('tv', {"q": "series"}),
                      ('music', {"q": "audio"}),
                      ('anime', {"q": "anime"}),
-                     ('wooow', {"q": "wooow"}),
                      ('books', {"q": "ebook"}),
                      ('adult', {"q": "porn"}),
                      ('software', {"q": "software"}),
