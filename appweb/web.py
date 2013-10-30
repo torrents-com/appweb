@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+
 """
-    Módulo principal de la aplicación Web
+Módulo principal de la aplicación Web
 """
+
 import foofind.globals
 
 import os, os.path
@@ -25,6 +27,7 @@ from foofind.utils import u, logging
 from foofind.utils.bots import is_search_bot, is_full_browser, check_rate_limit
 
 from appweb.blueprints.files import files
+from appweb.blueprints.extras import extras
 from appweb.templates import register_filters
 
 import scss
@@ -94,27 +97,32 @@ def create_app(config=None, debug=False):
 
     # Blueprints
     app.register_blueprint(files)
-
+    app.register_blueprint(extras)
 
     # Web Assets
-    scss.config.LOAD_PATHS = [os.path.dirname(os.path.dirname(app.static_folder))]
+    dir_static = app.static_folder  # shortcut
+    scss.config.LOAD_PATHS = [os.path.abspath('%s/../..' % dir_static)]
 
-    if not os.path.isdir(app.static_folder+"/gen"): os.mkdir(app.static_folder+"/gen")
-    #if not os.path.isdir(app.static_folder+"/blubster/gen"): os.mkdir(app.static_folder+"/blubster/gen")
-    #if not os.path.isdir(app.static_folder+"/foofind/gen"): os.mkdir(app.static_folder+"/foofind/gen")
-    if not os.path.isdir(app.static_folder+"/torrents/gen"): os.mkdir(app.static_folder+"/torrents/gen")
-    app.assets = assets = Environment(app)
-    assets.debug = app.debug
-    assets.versions = "hash"
+    for subdir in ['%s/%s' % (dir_static, x) for x in ['gen', 'torrents/gen']]:
+        if not os.path.isdir(subdir):
+            os.mkdir(subdir)
+
+    app.assets = Environment(app)
+    app.assets.debug = app.debug
+    app.assets.versions = "hash"
 
     register_filter(JsSlimmer)
     register_filter(CssSlimmer)
 
-    #~ assets.register('css_blubster', Bundle('blubster/css/blubster.scss', filters='pyscss', output='blubster/gen/blubster.css', debug=False, depends='appweb.scss'), filters='css_slimmer', output='blubster/gen/blubster.css')
-    #~ assets.register('css_foofind', Bundle('foofind/css/foofind.scss', filters='pyscss', output='foofind/gen/foofind.css', debug=False), filters='css_slimmer', output='foofind/gen/foofind.css')
-    assets.register('css_torrents', Bundle('torrents/css/torrents.scss', filters='pyscss', output='torrents/gen/torrents.css', debug=False), filters='css_slimmer', output='torrents/gen/torrents.css')
-    assets.register('js_appweb', Bundle('prototype.js', 'event.simulate.js', 'chosen.proto.min.js','appweb.js', filters='rjsmin', output='gen/appweb.js'), )
-
+    app.assets.register(
+        'css_torrents',
+        Bundle('torrents/css/torrents.scss',
+               filters='pyscss', output='torrents/gen/torrents.css', debug=False),
+        filters='css_slimmer', output='torrents/gen/torrents.css')
+    app.assets.register(
+        'js_appweb',
+        Bundle('prototype.js', 'event.simulate.js', 'chosen.proto.min.js','appweb.js',
+               filters='rjsmin', output='gen/appweb.js'))
 
     # Traducciones
     babel.init_app(app)
@@ -137,6 +145,7 @@ def create_app(config=None, debug=False):
     feedbackdb.init_app(app)
     entitiesdb.init_app(app)
     usersdb.init_app(app)
+    plugindb.init_app(app)
 
     # Servicio de búsqueda
     @app.before_first_request
@@ -160,7 +169,7 @@ def create_app(config=None, debug=False):
         if values is None:
             g.lang = "en"
         else:
-            g.lang = values.pop('lang', None)
+            g.lang = values.pop('lang', "en")
 
     @app.url_defaults
     def add_language_code(endpoint, values):
@@ -208,17 +217,25 @@ def create_app(config=None, debug=False):
 
     return app
 
-def init_g(app):
 
+def init_g(app):
     g.license_name = "torrents"
-    
+
     g.tos_link = "http://torrents.com/legal#tos"
     g.privacy_link = "http://torrents.com/legal#privacy"
-    
-    g.analytics_code = '<script type="text/javascript"> \n  var _gaq = _gaq || [];\n  _gaq.push([\'_setAccount\', \'UA-38333996-2\']);  _gaq.push([\'_trackPageview\']); \n  (function() {\n    var ga = document.createElement(\'script\'); ga.type = \'text/javascript\'; ga.async = true;    ga.src = (\'https:\' == document.location.protocol ? \'https://ssl\' : \'http://www\') + \'.google-analytics.com/ga.js\'; \n    var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(ga, s); \n  })(); \n</script>'
+
+    g.analytics_code = """<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38333996-2']);  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>"""
 
     # caracteristicas del cliente
-    g.search_bot=is_search_bot()
+    g.search_bot = is_search_bot()
 
     # peticiones en modo preproduccion
     g.beta_request = request.url_root[request.url_root.index("//")+2:].startswith("beta.")
@@ -234,26 +251,27 @@ def init_g(app):
     g.args = {}
 
     g.page_description=g.title=""
-    
-    g.categories = (('movies',{"q":"movie"}),
-                     ('games',{"q":"game"}),
-                     ('tv',{"q":"series"}),
-                     ('music',{"q":"audio"}),
-                     ('anime',{"q":"anime"}),
-                     ('books',{"q":"ebook"}),
-                     ('adult',{"q":"porn"}),
-                     ('software',{"q":"software"}),
-                     ('mobile',{"q":"mobile"}),
-                     ('pictures',{"q":"image"})
+
+    g.categories = (('movies', {"q": "movie"}),
+                     ('games', {"q": "game"}),
+                     ('tv', {"q": "series"}),
+                     ('music', {"q": "audio"}),
+                     ('anime', {"q": "anime"}),
+                     ('wooow', {"q": "wooow"}),
+                     ('books', {"q": "ebook"}),
+                     ('adult', {"q": "porn"}),
+                     ('software', {"q": "software"}),
+                     ('mobile', {"q": "mobile"}),
+                     ('pictures', {"q": "image"})
                      )
 
 import appweb.blueprints.files
 old_torrents_data = appweb.blueprints.files.torrents_data
+
 def torrents_data2(data):
-    
-    #picture está al revés por necesidades de la aplicación
-    defaults = {"video":"movies","document":"books", "audio":"music", "picture":"image" }
-    
+    # picture está al revés por necesidades de la aplicación
+    defaults = {"video":"movies","document":"books", "audio":"music", "picture":"image"}
+
     new_data = old_torrents_data(data)
     file_type = data["view"]["file_type"]
         # tags del fichero
@@ -264,9 +282,9 @@ def torrents_data2(data):
     if file_type == data["view"]["file_type"]:
         if data["view"]["file_type"] in defaults:
             data["view"]["file_type"] = defaults[data["view"]["file_type"]]
-            
+
     data['view']['first_image_server'] = "images.torrents.com"
-            
+
     return new_data
-    
+
 appweb.blueprints.files.torrents_data = torrents_data2
