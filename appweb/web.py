@@ -10,7 +10,7 @@ from foofind import defaults
 from collections import OrderedDict
 from flask import Flask, g, request, render_template, redirect, abort, url_for, make_response
 from flask.ext.assets import Environment, Bundle
-from flask.ext.babel import get_translations, gettext as _
+from flask.ext.babelex import get_domain, gettext as _
 from flask.ext.login import current_user
 from babel import support, localedata, Locale
 from raven.contrib.flask import Sentry
@@ -141,7 +141,11 @@ def create_app(config=None, debug=False):
 
     @babel.localeselector
     def get_locale():
-        return "en"
+        '''
+        Devuelve el código del idioma activo.
+        '''
+        try: return g.lang
+        except: return "en"
 
     # Autenticación
     auth.setup_app(app)
@@ -154,9 +158,7 @@ def create_app(config=None, debug=False):
     # Acceso a bases de datos
     filesdb.init_app(app)
     pagesdb.init_app(app)
-    feedbackdb.init_app(app)
     entitiesdb.init_app(app)
-    usersdb.init_app(app)
     plugindb.init_app(app)
 
     # Servicio de búsqueda
@@ -174,7 +176,6 @@ def create_app(config=None, debug=False):
     # Refresco de conexiones
     eventmanager.once(filesdb.load_servers_conn)
     eventmanager.interval(app.config["FOOCONN_UPDATE_INTERVAL"], filesdb.load_servers_conn)
-    eventmanager.interval(app.config["FOOCONN_UPDATE_INTERVAL"], entitiesdb.connect)
 
     @app.url_value_preprocessor
     def pull_lang_code(endpoint, values):
@@ -225,6 +226,7 @@ def create_app(config=None, debug=False):
     def all_errors(e):
         error = e.code if hasattr(e,"code") else 500
         title, description = errors[error if error in errors else 500]
+        g.lang = request.path[1:3] if len(request.path)>2 else "en"
         init_g(app)
         return render_template('error.html', code=str(error), title=title,
                                description=description), error
@@ -234,9 +236,6 @@ def create_app(config=None, debug=False):
 
 def init_g(app):
     g.license_name = "torrents"
-
-    g.tos_link = "http://torrents.com/legal#tos"
-    g.privacy_link = "http://torrents.com/legal#privacy"
 
     g.analytics_code = """<script type="text/javascript">
   var _gaq = _gaq || [];
@@ -274,6 +273,9 @@ def init_g(app):
     g.args = {}
 
     g.page_description=g.title=""
+
+    g.tos_link = app.config["TOS_LINK"]
+    g.privacy_link = app.config["PRIVACY_LINK"]
 
     g.categories = (('movies', {"q": "movie"}),
                      ('games', {"q": "game"}),
