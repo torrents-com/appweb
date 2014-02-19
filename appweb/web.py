@@ -8,7 +8,7 @@ import foofind.globals
 import os, os.path, functools
 from foofind import defaults
 from collections import OrderedDict
-from flask import Flask, g, request, render_template, redirect, abort, url_for, make_response
+from flask import Flask, g, request, render_template, redirect, abort, url_for, make_response, current_app
 from flask.ext.assets import Environment, Bundle
 from flask.ext.babelex import get_domain, gettext as _
 from flask.ext.login import current_user
@@ -49,6 +49,7 @@ def create_app(config=None, debug=False):
     '''
     app = Flask(__name__)
     app.config.from_object(defaults)
+
     app.debug = debug
 
     # Configuración
@@ -237,7 +238,7 @@ def create_app(config=None, debug=False):
 def init_g(app):
     g.license_name = "torrents"
 
-    g.analytics_code = app.config["ANALYTICS_CODE"]
+    g.analytics_code = current_app.config["ANALYTICS_CODE"]
 
     # caracteristicas del cliente
     g.search_bot = is_search_bot()
@@ -246,9 +247,9 @@ def init_g(app):
     g.beta_request = request.url_root[request.url_root.index("//")+2:].startswith("beta.")
 
     # endpoint de entrada (usado en la página de error)
-    if app.config["APPWEB_MODE"] == "search":
+    if current_app.config["APPWEB_MODE"] == "search":
         g.home_route = "files.home"
-    elif app.config["APPWEB_MODE"] == "extras":
+    elif current_app.config["APPWEB_MODE"] == "extras":
         g.home_route = "extras.home"
     else:
         logging.error(u"APPWEB_MODE no especificado en la configuración")
@@ -256,18 +257,18 @@ def init_g(app):
 
     # prefijo para los contenidos estáticos
     if g.beta_request:
-        app_static_prefix = app.static_url_path
+        app_static_prefix = current_app.static_url_path
     else:
-        app_static_prefix = app.config["STATIC_PREFIX"] or app.static_url_path
-    g.static_prefix = app.assets.url = app_static_prefix
+        app_static_prefix = current_app.config["STATIC_PREFIX"] or current_app.static_url_path
+    g.static_prefix = current_app.assets.url = app_static_prefix
 
     g.keywords = set()
     g.args = {}
 
     g.page_description=g.title=""
 
-    g.tos_link = app.config["TOS_LINK"]
-    g.privacy_link = app.config["PRIVACY_LINK"]
+    g.tos_link = current_app.config["TOS_LINK"]
+    g.privacy_link = current_app.config["PRIVACY_LINK"]
 
     g.categories = (('movies', {"q": "movie"}),
                      ('games', {"q": "game"}),
