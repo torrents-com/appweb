@@ -243,6 +243,9 @@ def create_app(config=None, debug=False):
 
 
 def init_g(app):
+    if not g.lang in current_app.config["LANGS"]:
+        g.lang = "en"
+
     g.license_name = "torrents"
 
     g.analytics_code = current_app.config["ANALYTICS_CODE"]
