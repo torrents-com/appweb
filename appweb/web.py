@@ -160,7 +160,11 @@ def create_app(config=None, debug=False):
     filesdb.init_app(app)
     pagesdb.init_app(app)
     entitiesdb.init_app(app)
-    plugindb.init_app(app)
+    if appmode=="extras":
+        plugindb.init_app(app)
+
+    for service_name, params in app.config["DATA_SOURCE_SHARING"].iteritems():
+        eval(service_name).share_connections(**{key:eval(value) for key, value in params.iteritems()})
 
     # Servicio de búsqueda
     @app.before_first_request
