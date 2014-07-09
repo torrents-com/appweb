@@ -248,7 +248,8 @@ def init_g(app):
 
     g.license_name = "torrents"
 
-    g.analytics_code = current_app.config["ANALYTICS_CODE"]
+    g.version_code = request.form.get("version",None)
+    g.analytics_code = current_app.config["ANALYTICS_CODE"] % {"client_version":g.version_code or ""}
 
     # caracteristicas del cliente
     g.search_bot = is_search_bot()
